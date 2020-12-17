@@ -8,7 +8,6 @@ view: order_items {
     type: number
     sql: ${TABLE}."ID" ;;
   }
-
   dimension_group: created {
     type: time
     timeframes: [
@@ -18,7 +17,8 @@ view: order_items {
       week,
       month,
       quarter,
-      year
+      year,
+      day_of_year
     ]
     sql: ${TABLE}."CREATED_AT" ;;
   }
