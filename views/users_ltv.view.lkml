@@ -1,4 +1,33 @@
-view: test_view {
+view: users_ltv {
+  derived_table: {
+    sql: SELECT
+        user_id AS user_id
+        , count(*) AS lifetime_orders
+        , max(created_at) AS most_recent_purchase_at
+      FROM order_items
+
+      GROUP BY user_id ;;
+  }
+  dimension: user_id {
+    primary_key: yes
+    type: number
+    sql: ${TABLE}.user_id;;
+  }
+  dimension: lifetime_orders {
+    type: number
+    sql: ${TABLE}.lifetime_orders ;;
+  }
+  dimension: lifetime_order_tier {
+    type: tier
+    tiers: [1,2,3,6,10]
+    sql: ${lifetime_orders} ;;
+    style: integer
+  }
+  dimension: most_recent_purchase_at {
+    type: date
+    sql: ${TABLE}.most_recent_purchase_at ;;
+  }
+}
   # # You can specify the table name if it's different from the view name:
   # sql_table_name: my_schema_name.tester ;;
   #
@@ -27,9 +56,9 @@ view: test_view {
   #   type: sum
   #   sql: ${lifetime_orders} ;;
   # }
-}
+# }
 
-# view: test_view {
+# view: users_ltv {
 #   # Or, you could make this view a derived table, like this:
 #   derived_table: {
 #     sql: SELECT

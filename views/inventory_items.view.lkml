@@ -3,8 +3,7 @@ view: inventory_items {
     ;;
   drill_fields: [id]
 
-#################################
-#################################
+################
   measure: total_cost {
     type: sum
     sql: ${cost} ;;
@@ -13,13 +12,7 @@ view: inventory_items {
     type: average
     sql: ${cost} ;;
   }
-  measure: total_price {
-    type: sum
-    sql: ${product_retail_price} ;;
-  }
-#################################
-#################################
-
+################
 
   dimension: id {
     primary_key: yes
@@ -49,10 +42,6 @@ view: inventory_items {
   dimension: product_brand {
     type: string
     sql: ${TABLE}."PRODUCT_BRAND" ;;
-    drill_fields: [
-      product_category,
-      product_name
-    ]
   }
 
   dimension: product_category {

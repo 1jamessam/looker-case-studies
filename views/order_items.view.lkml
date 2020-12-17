@@ -3,74 +3,6 @@ view: order_items {
     ;;
   drill_fields: [id]
 
-  measure: total_orders {
-    type: count_distinct
-    sql: ${order_id} ;;
-    # sql_distinct_key: ${order_id} ;;
-  }
-
-#################################
-  measure: total_sale_price {
-    type: sum
-    sql: ${sale_price} ;;
-    value_format_name: usd_0
-  }
-  measure: average_sale_price {
-    type: average
-    sql: ${sale_price} ;;
-    value_format_name: usd_0
-  }
-  measure: cumulative_total_sale {
-    type: running_total
-    sql: ${total_sale_price} ;;
-    value_format_name: usd_0
-  }
-  dimension: is_completed {
-    type: yesno
-    sql: ${status} not in ('Cancelled', 'Returned') ;;
-  }
-  dimension: revenue {
-    type: number
-    sql: case when ${is_completed} then ${sale_price}
-      else 0 end ;;
-    value_format_name: usd_0
-  }
-  measure: items_returns {
-    type: sum
-    sql: 1 ;;
-    filters: [status: "Returned"]
-  }
-  measure: items_sold {
-    type: sum
-    sql: case when ${status} != 'Cancelled' then 1
-    else 0 end;;
-  }
-  measure: return_rate {
-    type: number
-    sql: ${items_returns} / ${items_sold} ;;
-  }
-  measure: total_users_items_returned {
-    type: count_distinct
-    sql: ${user_id} ;;
-    filters: [status: "Returned"]
-  }
-  measure: total_users {
-    type: count_distinct
-    sql: ${user_id} ;;
-  }
-  measure: user_return_percentage {
-    type: number
-    sql: ${total_users_items_returned} / ${total_users} ;;
-    value_format_name: percent_2
-  }
-  measure: average_spend_per_user {
-    type: number
-    sql: ${total_sale_price} / ${total_users} ;;
-    value_format_name: usd_0
-  }
-#################################
-#################################
-
   dimension: id {
     primary_key: yes
     type: number
@@ -78,7 +10,6 @@ view: order_items {
   }
 
   dimension_group: created {
-    # can_filter: yes
     type: time
     timeframes: [
       raw,
@@ -108,7 +39,6 @@ view: order_items {
 
   dimension: inventory_item_id {
     type: number
-    # hidden: yes
     sql: ${TABLE}."INVENTORY_ITEM_ID" ;;
   }
 
@@ -157,24 +87,11 @@ view: order_items {
 
   dimension: user_id {
     type: number
-    # hidden: yes
     sql: ${TABLE}."USER_ID" ;;
   }
 
   measure: count {
     type: count
-    drill_fields: [detail*]
-  }
-
-  # ----- Sets of fields for drilling ------
-  set: detail {
-    fields: [
-      id,
-      users.first_name,
-      users.last_name,
-      users.id,
-      inventory_items.id,
-      inventory_items.product_name
-    ]
+    drill_fields: [id]
   }
 }

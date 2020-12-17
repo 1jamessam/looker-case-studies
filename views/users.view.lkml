@@ -13,12 +13,6 @@ view: users {
     type: number
     sql: ${TABLE}."AGE" ;;
   }
-  dimension: age_bucket {
-    type: tier
-    tiers: [15, 26, 36, 51, 66]
-    sql: ${age} ;;
-    style: integer
-  }
 
   dimension: city {
     type: string
@@ -44,35 +38,32 @@ view: users {
     ]
     sql: ${TABLE}."CREATED_AT" ;;
   }
+
   dimension: email {
     type: string
     sql: ${TABLE}."EMAIL" ;;
   }
+
   dimension: first_name {
     type: string
     sql: ${TABLE}."FIRST_NAME" ;;
   }
+
   dimension: gender {
     type: string
     sql: ${TABLE}."GENDER" ;;
   }
+
   dimension: last_name {
     type: string
     sql: ${TABLE}."LAST_NAME" ;;
   }
-  dimension: location {
-    type: location
-    sql_latitude: ${latitude} ;;
-    sql_longitude: ${longitude} ;;
-    drill_fields: [
-      products.brand,
-      products.category
-    ]
-  }
+
   dimension: latitude {
     type: number
     sql: ${TABLE}."LATITUDE" ;;
   }
+
   dimension: longitude {
     type: number
     sql: ${TABLE}."LONGITUDE" ;;
@@ -95,6 +86,6 @@ view: users {
 
   measure: count {
     type: count
-    drill_fields: [id, first_name, last_name, events.count, order_items.count]
+    drill_fields: [id, last_name, first_name, events.count, order_items.count]
   }
 }
