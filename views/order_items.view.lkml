@@ -8,6 +8,14 @@ view: order_items {
     type: number
     sql: ${TABLE}."ID" ;;
   }
+  measure: first_order_created {
+    type: min
+    sql: ${created_date} ;;
+  }
+  measure: last_order_created {
+    type: max
+    sql: ${created_date} ;;
+  }
   dimension_group: created {
     type: time
     timeframes: [
@@ -90,7 +98,7 @@ view: order_items {
     sql: ${TABLE}."USER_ID" ;;
   }
 
-  measure: count {
+  measure: order_count {
     type: count
     drill_fields: [id]
   }

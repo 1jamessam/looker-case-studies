@@ -20,4 +20,14 @@ explore: order_items {
     sql_on: ${order_items.id} = ${order_facts.order_id} ;;
     relationship: one_to_one
   }
+  join: products {
+    type: left_outer
+    sql_on: ${inventory_items.product_id} = ${products.id} ;;
+    relationship: many_to_one
+  }
+  join: user_ltv {
+    type: left_outer
+    sql_on: ${order_items.user_id} = ${user_ltv.user_id} ;;
+    relationship: many_to_one
+  }
 }
